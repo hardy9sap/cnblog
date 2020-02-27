@@ -1,0 +1,247 @@
+/* 注册页面 http://127.0.0.1:8080/register/ */
+/* body背景色 */
+body {
+    background: rgb(248, 248, 248);
+}
+
+/* 导航条背景色 */
+#id_navbar {
+    background: #283e5c;
+}
+
+/* 导航条 --> 品牌图标（覆写Bootstrap的颜色和字体大小） */
+/*.navbar-brand {*/
+/*    color: white !important;*/
+/*    font-size: 20px !important;*/
+/*}*/
+
+/* 导航条 --> 品牌图标 */
+#id_img_brand {
+    position: absolute;
+    top: -45px;
+    width: 145px;
+}
+
+/* 响应式的导航条中的导航 --> 设置每个li的内边距 */
+#bs-example-navbar-collapse-1 ul li {
+    padding-left: 20px;
+}
+
+/* 响应式的导航条中的导航 --> 覆写li中的每个a的颜色和字体大小 */
+#bs-example-navbar-collapse-1 ul li a {
+    color: white !important;
+    font-size: 15px !important;
+}
+
+/* 响应式的导航条中的导航 --> 设置span中的文字的间距 */
+#bs-example-navbar-collapse-1 ul li a span {
+    letter-spacing: 0.3em;
+}
+
+/* 响应式的导航条中的导航 --> 设置a的鼠标悬浮状态 */
+#bs-example-navbar-collapse-1 ul li a:hover {
+    opacity: 0.5;
+}
+
+/* 响应式的导航条中的导航 --> 将id为id_register_active的a标签的鼠标悬浮状态恢复正常 */
+#bs-example-navbar-collapse-1 ul #id_register_active a:hover {
+    opacity: 1.0;
+}
+
+/* 首页图标 */
+#id_home_icon {
+    position: absolute;
+    width: 18px;
+    top: 15px;
+    left: -10px;
+}
+
+/* 登录图标 */
+#id_login_icon {
+    position: absolute;
+    width: 22px;
+    top: 13px;
+    left: -12px;
+}
+
+/* 注册图标 */
+#id_register_icon {
+    position: absolute;
+    width: 22px;
+    top: 13px;
+    left: 7px;
+}
+
+/* 覆写当前注册页面的padding-left */
+#id_register_active {
+    padding-left: 0 !important;
+}
+
+/* 设置注册div中的a的padding */
+#id_register_active a {
+    /*padding-left: 0;*/
+    /*padding-right: 0;*/
+    /*padding-top: 10px;*/
+    /*padding-bottom: 10px;*/
+    padding: 10px 0;
+}
+
+/* 设置注册div中的a中的span样式 */
+#id_register_active a span {
+    background: #2278cf;
+    display: block;
+    /*padding-left: 35px; */
+    /*padding-right: 15px; */
+    /*padding-top: 5px; */
+    /*padding-bottom: 5px; */
+    padding: 5px 15px 5px 35px;
+    border-radius: 4px;
+}
+
+/* 帮助图标 */
+#id_help_icon {
+    position: absolute;
+    width: 22px;
+    top: 13px;
+    left: -12px;
+}
+
+/* 主体 */
+/* 容器container的上下外边距 */
+#id_container {
+    margin-top: 50px;
+    margin-bottom: 80px;
+}
+
+/* 统一主体的三行样式 */
+.class-row {
+    margin-left: 20px !important;
+}
+
+/* 覆写Bootstrap lead类的字体大小 */
+.lead {
+    font-size: 25px !important;
+}
+
+/* 水平线的样式 */
+#id_hr {
+    border-top: 1px solid rgba(0,0,0,.1);
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+
+/* 设置是某一父元素的第三个元素并且含类名为class_row的上外边距 */
+.class_row:nth-child(3) {
+    margin-top: 20px !important;
+}
+
+/* 覆写Bootstrap form-horizontal字体大小 */
+.form-horizontal {
+    font-size: 17px !important;
+}
+
+/* 统一form-group类的样式 */
+.class-form-group {
+    margin-bottom: 0 !important;
+}
+
+/* 对id为id_email、id_tel、id_name_for_login、id_nickname、id_pwd、id_confirm_pwd 6个元素统一样式 */
+.class-form-6-elms {
+    text-align: left !important;
+    padding-right: 5px !important;
+    width: 100px !important;
+}
+
+/* 对id为id_email、id_pwd 2个元素统一样式*/
+.class-email-pwd {
+    letter-spacing: 0.9em;
+}
+
+/* 对id为id_email、id_name_for_login、id_nickname、id_pwd、id_confirm_pwd 5个元素统一样式 */
+.class-form-5-elms {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* 对tel中的col-xs-8设置样式 */
+#id_tel_col_xs_8 {
+    padding-left: 5px;
+}
+
+/* 对tel中的col-xs-9设置样式*/
+#id_tel_col_xs_9 {
+    padding-left: 0;
+    padding-right: 5px;
+}
+
+/* 对id_register_btn和protocol设置样式 */
+.class-regBtn-protocol {
+    padding-right: 5px;
+    width: 100px;
+}
+
+/* 统一help-block样式 */
+.class-help-block {
+    font-size: 15px;
+    margin-top: 0;
+}
+
+/* width: 370px; */
+.class-width-370 {
+    width: 370px;
+}
+
+/* width: 302px; */
+.class-width-302 {
+    width: 302px;
+}
+
+/* 对用户协议中的col-xs-8统一样式 */
+#id_protocol_col_xs_8 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* 对用户协议中的col-xs-8中的span元素设置样式 */
+#id_protocol_col_xs_8 span {
+    font-size: 15px;
+}
+
+/* 对用户协议中的col-xs-8中的span中的a元素设置下划线 */
+#id_protocol_col_xs_8 span a {
+    text-decoration: underline !important;
+}
+
+/* 注册按钮 */
+#id_register_btn {
+    width: 100px;
+    background: #2278cf;
+}
+
+/* 侧边栏 */
+#id_img_side {
+    position: relative;
+    height: 360px;
+}
+
+/* 侧边栏中的竖线父元素 */
+#id_img_side .side-line {
+    position: absolute;
+    height: 100%;
+    left: 60px;
+    top: 20px;
+}
+
+/* 侧边栏中的竖线 */
+#id_img_side .side-line div {
+    width: 1px;
+    height: 90%;
+    background: #eee;
+}
+
+/* 侧边栏中的图片 */
+#id_img_side img {
+    width: 368px;
+    height: 360px;
+    margin-left: 85px;
+}

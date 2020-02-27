@@ -1,0 +1,481 @@
+项目流程：
+1. 弄清楚项目需求
+
+   (1) 基于Django用户认证组件和Ajax实现登录验证(基于PIL模块的图片验证码)
+   (2) 基于Django forms组件和Ajax实现注册功能
+   (3) 设计系统首页(文章列表渲染)
+   (4) 设计个人站点页面
+   (5) 文章详情页面
+   (6) 实现文章点赞功能
+   (7) 实现文章的评论
+   (8) 富文本编辑框和防止xss攻击
+
+2. 设计表结构
+
+3. 对每一个功能进行开发
+
+4. 功能测试
+
+5. 项目部署
+
+
+遗漏知识点：
+1. AbstractUser
+settings.py中
+AUTH_USER_MODEL = 'blog.UserInfo'
+
+2. 评论
+   根评论
+   子评论
+   ForeignKey('Comment', null=True)
+                       'self'  自关联
+
+    # SQL疑惑点：
+    # 如果nid为主键。但是telephone设置为not null & unique，会不会有两个主键呢？
+    # 解答：
+    # 首先，innodb引擎不可能有两个主键，
+    # nid是主键（必须的），telephone是not null & unique两个约束，仅此而已。
+    # 如果在not null & unique之前有主键了，那么此字段不会转成主键
+    # 如果之前不存在主键，那么会转成主键
+
+3. Django ORM没有联合主键，
+   但是可以这样做，一个字段为主键，另一个字段为not null + uniqe，在unique_together
+
+4. 一次请求伴随着多次请求
+
+5. 图片验证码
+5.1 PIL模块
+step1:
+<img src='/login/get-check-code/?width=180&height=46' />
+step2:
+安装
+pip3 install pillow
+导入
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
+生成验证码数据
+1. 获取尺寸
+2. 生成图片
+    img = Image.new(mode='RGB', size=(int_width, int_height), color=(255, 255, 255))
+                                                        size的宽和高：int                   color的取值：'red' / (255, 255, 255)
+3. 书写文字
+    draw = ImageDraw.Draw(im=img)  # 画笔对象
+    font = ImageFont.truetype(font='.../*.ttf', size=40)  # 字体
+    draw.text(xy=(x, y), text=char, fill=color, font=font)
+4. 生成噪点
+    draw.point(xy=(x, y), fill=color)  # 画点
+    draw.arc(xy=(x1, y1, x2, y2), start=0, end=90, fill=color)  # 画弧
+                   区域                        开始角    结束角
+5. 生成噪线
+    draw.line(xy=(x1, y1, x2, y2), fill=color)
+    生成噪点噪线的时候，xy必须在width和height之内
+6. 写入文件
+    import io
+    fp = io.BytesIO()
+    img.save(fp=fp, format='png')
+7. 返回
+   fp.getvalue()
+5.2 验证码刷新
+   对于一些src的局部刷新，没必要用ajax，可以直接改变src的值，进行刷新
+
+5.3 验证码校验
+   首先要将生成的验证码文字保存到cookie or session中（验证码跟用户走）
+   post的时候，拿提交的值跟cookie or session中的对比
+
+
+
+6. geetest
+    在django中使用，最好先安装social-auth-app-django以及social-auth-core模块
+
+7. FileField和ImageField
+7.1 FileField(upload_to='avatars/', storage=None, default='avatars/default.png')
+                                                        storage=django.core.files.storage.FileSystemStorage
+                    upload_to其他写法：
+                    upload_to='avatars/%Y/%m/%d/'
+                    upload_to='avatars/%Y-%m/'
+7.2 ImageField(upload_to='uploads/', storage=None, width_field=None, height_field=None)
+                                                                                       width_field：上传图片的宽度保存的数据库字段名（字符串）
+                                                                                       heigth_field:  上传图片的高度保存的数据库字段名（字符串）
+8. 头像
+8.1 头像点击
+      利用label标签的for属性与input type=file标签关联，
+将默认头像img标签包裹到label标签中，再将input标签的display属性值设置为none。
+PS: img标签中的src属性值，是服务端static or media的一个图片地址
+      更新知识点：
+	display: none;和visible: hidden;的区别：区别就是display: none不占空间，visible: hidden占空间
+8.2 头像预览
+      1. 为img绑定change事件(jquery)
+      2. 获取file dom对象
+          var imgObj = $(this).get(0).files[0]
+      3. 实例化一个FileReader对象
+          var reader = new FileReader();
+      4. 获取图像文件路径
+          reader.readAsDataURL(imgObj);
+          PS: readAsBinaryString(imgObj);  读取文件数据
+      5. 为reader绑定onload事件
+          reader.onload = function () {为img标签设置src属性值：reader.result}
+      6. 为什么要绑定onload事件呢？
+          首先readAsDataUURL是需要花费时间，而且是异步操作，所以接着马上执行赋值操作，是没有值的。
+          因此需要绑定onload事件。
+8.3 头像提交
+      JS:
+      form表单对象(jquery)有一个serializeArray()，
+     返回一个数据，创建一个对象组成的js数组，可以用来编码成JSON。
+
+      在使用formdata提交数据的时候，可以循环它进行添加，方便。
+      但是不包含文件字段，需要额外添加。
+
+      Django:
+      UserInfo.objects.create_superuser(avatar=file_obj)
+      一定要传文件对象，FileField or ImageField会做的事情：
+     1.（默认情况下）下载文件资源到项目根目录（如果配置了media，则下载到指定的目录，如果不存在，则创建）
+     2. 数据库中字段的值为upload_to的值 + 文件名
+     PS：如果访问FileField or ImageField字段的值，默认拿到的是对象，要通过str进行转换。
+     PS：模板中直接可以拿，因为模板中的输出相当于print
+     PS:  create_superuser中的 *extra_fields的代码优化
+
+9. 静态文件（√）
+9.1 static
+      一般存放服务端需要用的静态资源
+9.2 media
+      一般存放客户端上传的静态资源
+9.2.1 media_root
+      媒体静态资源在服务端中的根目录
+      MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+9.2.2 media_url
+      外界访问的URL
+      MEIDA_URL = '/media/'
+      {% get_media_prefix %}
+9.3 外界访问静态资源
+9.3.1 对于static，Django已为我们做好了路由配置
+9.3.2 对于media，需要开发者手动配置
+        from django.views.static import serve
+        re_path(r'media/(?<path>.*)/$',  serve, {'document_root': settings.MEDIA_ROOT'})
+
+10 admin后台管理
+     1. 超级用户登录
+     2. admin.py注册
+         from django.contrib import admin
+         url('admin/', admin.site.urls)
+         admin.site.register(models.UserInfo)
+         ...
+
+11. 博客日期分组（√）
+     SQL知识点补充：select title, create_time > '1995-09-26' from blog_article;
+     ORM补充：
+                    extra方法：extra(select=None, where=None, params=None, tables=None, order_by=None, select_params=None)
+                    在有一些情况下，Django的查询语法难以简单的表达复杂的where子句。
+                    对于这种情况，Django提供了extra() 来修改queryset的机制
+                    参数之select
+                           select 参数可以让你在 select 从句中添加其他字段信息，它应该是一个字典，存放着属性名到SQL从句的映射
+                           例如：
+                                   res = models.Article.objects.extra(select={'is_select': 'create_time > "2017-09-05"'})
+                                   结果集中每个对象都有一个额外的属性is_recent，它是一个布尔值
+                     日期分组：
+                            res = models.Article.objects.all().filter(user=user).extra(select={'y_m': 'date_format(create_time, "%%Y-%%m")'})
+                                                                                                           .values('y_m').annotate(c=Count('nid')).values('y_m', 'c')
+                     方式二：
+                            from django.db.models.functions import TruncMonth, TruncYear, TruncDay, TruncDate, TruncHour, TruncMinute, TruncSecond
+                            res = models.Article.objects.all().filter(user=user).annotate(month=TruncMonth('create_time'))   # 往select添加一个字段
+                                                                                                           .values('month')
+                                                                                                           .annotate(c=Count('nid'))
+                                                                                                           .values('month', 'c')
+                                                                                                            注意得到的month是datetime对象
+     annotate新知识点：
+     annotate.values.annotate.values，第一个annotate是往select添加字段
+
+12. 过滤日期
+      如果月份不好使，应该是时区的问题，将USE_TZ = False
+
+13. inclusion_tag模板和数据结合
+
+14. 文章
+     文章内容，本质是一串html代码，在渲染的时候，Django会自动转义，防止xss攻击。
+     我们要做的是，文章内容提交时，过滤出危险的代码，在渲染时safe
+
+15. 评论
+     1. 构建样式
+     2. 提交根评论（哪个用户在哪一篇文章发表了什么评论，parent_comment为null）
+     3. 显示根评论（render or ajax(核心就是append子元素)）
+     4. 提交子评论（哪个用户对哪一篇文章中的哪个用户评论发表了什么评论，parent_comment为被回复者的id(根评论id)）
+     5. 显示子评论（render or ajax(核心也是append子元素)）
+
+     评论的展现形式：
+     形式一：评论楼
+            显示根评论：
+                   根据查询到的评论数据，顺序显示
+            显示子评论：
+                   根据查询到的评论数据，顺序显示（当然，可以拿到根评论id，显示根评论信息，表示对哪个根评论的回复）
+     形式二：评论树
+            基本思想：
+                   遇到根评论，直接展示。如果是子评论，根据parent_comment id，来查找到根评论（可以在跟评论元素上增加额外的属性，用来存储id值），
+                   并且append。
+     疑问：
+            有可能出现子评论在根评论前面吗？
+            1. 一定是先有根评论，再有子评论。
+            2. 默认ORM的排序是按照id排序的，为了以防万一，最好自行order_by('id')一下。
+
+16. ORM事务操作
+      例如：文章评论增加一条，相应地要在文章表中进行更新，虽然增加了额外的字段，但是节省了查询时间。
+      from django.db import transaction
+      with transaction.atomic():
+            创建文章评论对象
+            文章表 comemnt_count + 1
+
+17. 发送邮件
+from django.core.mail import send_mail
+from django.core.mail import send_mass_mail
+
+send_mail(subject, message, from_email, recipient_list=['1361722162@163.com'], fail_silently=False, html_message, auth_user, auth_password)
+1.subject 主题
+2.message 邮件文本内容
+3.from_email 发送者
+4.recipient_list 收件人列表
+5.auth_user 邮箱服务器认证用户
+6.auth_password 认证密码
+7.html_message html邮件内容
+8. fail_silently 表示如果出现异常是否报错
+
+settings.py配置
+# 邮件发送配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # 这个可以不设置，是默认的
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_TIMEOUT = 10  # 指定堵塞超时时间
+
+# 发送邮件的邮箱
+EMAIL_HOST_USER = 'hardy9sap@163.com'
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = 'hardy9sap972600'
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False  # SSL和TLS只能选择一个  # 安全连接端口587
+
+       ssl使用的端口和取消ssl的端口不一样
+
+       smtp   默认25         465(ssl)
+
+       pop3   默认110       995(ssl)
+
+       imap   默认143       993(ssl)
+
+　　SSL协议提供的服务主要有：
+
+　　1）认证用户和服务器，确保数据发送到正确的客户机和服务器；
+
+　　2）加密数据以防止数据中途被窃取；
+
+　　3）维护数据的完整性，确保数据在传输过程中不被改变。
+
+send_mail每次发邮件都会建立一个连接，发送多封邮件时建立多个连接。
+
+send_mass_mail 是建立单个连接发送多封邮件
+例如：
+      message1 = ('subject1', 'here is the subject1 message', 'from@example.com', ['first@example.com', 'second@example.com'])
+      message2 = ('subject2', 'here is the subject2 message', 'from@example.com', ['third@example.com', 'fourth@example.com'])
+
+      send_mass_mail(datatuple=(message1, message2), fail_silently=False, auth_user, auth_password)
+但由于发送邮件耗时，不是异步操作，所以需要额外处理。
+import threading
+threading.Thread(target=send_mail, args=(..., ...)).start()
+
+18. 日志
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+    }
+}
+
+19. URL汇总
+      STATIC_URL
+      MEDIA_URL
+      LOGIN_URL
+
+20. 富文本编辑器
+      kindeditor
+      官方地址：http://kindeditor.net/demo.php
+
+      HTML:
+      1. form表单
+      2. post请求
+      3. 指定一个textarea标签，并且设置id属性
+      4. 引入kindeditor.js以及自身的js
+
+      JS:
+      KindEditor.ready(function (K) {
+
+              window.editor = K.create("#textarea id", {
+
+                      width: "800px",
+                      height: "600px",
+                      uploadJson: "/upload/",  // 表示内容上传到哪个地址
+                      extraFileUploadParams: {
+
+                               csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+
+		},
+                       filePostName: "upload_img",  // 指定文件上传的名字参数
+
+	})
+
+})
+
+     Django View:
+
+     1. 获取文件
+         file = request.FILES.get('upload_img')
+     2. 保存文件的路径
+         path = os.path.join(settings.MEDIA_ROOT, 'addarticle', file.name)
+     3. 保存文件
+         with open
+     4. response = {'error': 0, 'url': '/media/addarticle/%s' % file.name}  # 必须返回json
+         return HttpResponse(content=json.dumps(response))
+     5. 这样对于文件，上传后，富文本也能显示图片
+
+
+21. 文章摘要
+      from bs4 import BeautifulSoup
+      soup = BeautifulSoup(markup=content, features='html.parser')
+      desc = soup.text[0:150] + '...'
+
+22. 防xss攻击
+    XSS攻击(Cross site Script)，跨站脚本
+        1. 什么是XSS
+
+        2. XSS分类
+            a. 反射型XSS（非持久型）
+
+            b. 存储型XSS（持久型）
+
+            c. DOM XSS
+
+     for tag in soup.find_all():
+           if tag.name == 'script':
+               tag.decompose()
+
+23. markdown 转化为 html
+    # 将 markdown 转化为 html
+
+    from markdown import markdown
+
+    md = '''
+
+    # 标题一
+
+    - 篮球
+    - 足球
+    - 羽毛球
+    '''
+
+    print(markdown(text=md))
+
+24. SimpleMDE编辑器
+HTML：
+    引入simplemde css和js（注意是debug目录下的，开发版本）
+    textarea标签，添加id属性
+JS：
+    var simplemde = new SimpleMDE({
+        element: document.getElementById('id_textarea'),  //不指定也可以，默认找第一个textarea
+        autoDownloadFontAwesome: false,  // simplemde用的是fontawesome字体，需要在线下载，这个属性表示不下载
+        status: false,                   // 因为中国下载慢，所以可以自行引入
+        // status: 编辑器底部的状态栏，我不需要就设置为false了
+    });
+
+额外的：
+HTML：
+    1. 有需要可以加上css最小高度
+        .CodeMirror, .CodeMirror-scroll {
+          min-height: 300px;
+        }
+    2. 美化渲染后的HTML
+        let editorPreviewSide = document.getElementsByClassName('editor-preview-side')[0];
+        console.log(editorPreviewSide);
+        editorPreviewSide.classList.add('markdown-body');
+        由于没有中文字体设置，需要自行添加"Microsoft Yahei"
+JS：
+    1. 获取内容
+        simplemde.value()
+
+    2. 转化HTML
+        let html = simplemde.value();
+        console.log(simplemde.markdown(html));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

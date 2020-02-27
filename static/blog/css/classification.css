@@ -1,0 +1,33 @@
+
+.calendar {
+    margin-bottom: 10px;
+}
+
+#id_img_rounded {
+    width: 230px;
+}
+
+#id_tags_panel_heading {
+    background: url(/static/blog/img/homesite_dir/bg01.png) rgb(54, 64, 80);
+    color: white;
+}
+
+.class-list-group-item {
+    background: rgb(54, 64, 80);
+    border: none;
+}
+
+a.class-list-group-item  {
+    color: white;
+    border: none;
+}
+
+#id_categorys_panel_heading {
+    background: url(/static/blog/img/homesite_dir/bg01.png) rgb(54, 64, 80);
+    color: white;
+}
+
+#id_archives_panel_heading {
+    background: url(/static/blog/img/homesite_dir/bg01.png) rgb(54, 64, 80);
+    color: white;
+}

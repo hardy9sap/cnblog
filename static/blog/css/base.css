@@ -1,0 +1,44 @@
+
+body {
+    background: #e8e8e8;
+}
+
+#id_top_banner_nav {
+    background: url(/static/blog/img/homesite_dir/bg01.png) rgb(54, 64, 80);
+    margin-bottom: 0;
+    box-shadow: 0 1px 9px 5px rgb(54, 64, 80);
+    padding: 1em 0;
+    border-top: 2px solid rgb(201, 70, 99);
+}
+
+#id_navbar_header {
+    position: relative;
+}
+
+#id_navbar_brand {
+    color: white;
+}
+
+#id_navbar_brand span {
+    text-shadow: 0 3px 6px #fff;
+    font-size: 25px;
+}
+
+#id_ul {
+    margin-left: 120px;
+}
+
+#id_ul li a {
+    font-size: 18px;
+}
+
+#id_container_fluid {
+    padding: 0;
+    margin-top: 10px;
+}
+
+div[class="col-md-2 sidebar"] {
+    background: url(/static/blog/img/homesite_dir/bg01.png) rgb(54, 64, 80);
+    box-shadow: 2px 5px 9px 2px rgb(54, 64, 80);
+    padding-right: 0;
+}

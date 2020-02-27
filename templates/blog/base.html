@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>博客园 - 代码改变世界</title>
+    {% endblock title%}
+    <link rel="icon" href="/static/blog/img/register_dir/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="/static/public/bootstrap3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/blog/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/blog/css/classification.css" />
+    <link rel="stylesheet" type="text/css" href="/static/blog/css/homesite.css" />
+    <link rel="stylesheet" type="text/css" href="/static/blog/css/articledetail.css" />
+    <script type="text/javascript" src="/static/public/jquery/jquery-3.4.0.js"></script>
+    <script type="text/javascript" src="/static/public/bootstrap3.3.7/js/bootstrap.js"></script>
+</head>
+<body>
+<div id="id_top_banner">
+    <nav id="id_top_banner_nav" class="navbar navbar-default navbar-inverse">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div id="id_navbar_header" class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" id="id_navbar_brand" href="/{{ user.username }}">
+                    <span>{{ user.blog.title }}</span>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul id="id_ul" class="nav navbar-nav navbar-right">
+                    <li class="">
+                        <a href="/">博客园</a>
+                    </li>
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    <li>
+                        <a href="#">新随笔</a>
+                    </li>
+                    <li>
+                        <a href="#">联系</a>
+                    </li>
+                    <li>
+                        <a href="#">订阅</a>
+                    </li>
+                    <li>
+                        <a href="/cnblog-backend/">管理</a>
+                    </li>
+                </ul>
+
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+
+<div id="id_container_fluid" class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar">
+            {% load mytags %}
+            {% get_classification_style sitename %}
+        </div>
+
+        <div class="col-md-10 content">
+            {% block content %}
+
+            {% endblock content%}
+
+        </div>
+    </div>
+</div>
+
+{% block script %}
+
+{% endblock script %}
+</body>
+</html>

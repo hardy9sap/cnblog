@@ -1,0 +1,19 @@
+# 1. form.user.auto_id ---> id_user / id_pwd  √
+
+# 2. FileField 和 ImageField  √
+# FileField可以接受任何文件类型（例如，.mp4、.mp3、.jpg、.txt等）
+# ImageField只接受图像文件
+
+# 3. raise ValueError('The given username must be set')  √
+# 如果碰到这个错误，首先检查局部钩子
+
+项目开发流程:  √
+1. 明确需求
+
+2. 设计表结构
+
+3. 根据每一个功能编写代码
+
+4. 测试
+
+5. 项目部署上线

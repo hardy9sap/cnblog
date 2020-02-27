@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客园 - 代码改变世界</title>
+    <meta name="author" content="hardy9sap"/>
+    <meta name="keywords" content="开发者, 博客园, 程序猿, 程序媛, 极客, 编程, 代码, 开源, IT网站, Developer, Programmer, Coder, Geek, 技术社区"/>
+    <meta name="description"
+          content="博客园是一个面向开发者的知识分享社区。自创建以来，博客园一直致力并专注于为开发者打造一个纯净的技术交流社区，推动并帮助开发者通过互联网分享知识，从而让更多开发者从中受益。博客园的使命是帮助开发者用代码改变世界。---由hardy9sap在自学Python期间利用Django框架模仿博客园开发的一个练手项目"/>
+    <link rel="icon" href="/static/blog/img/register_dir/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="/static/public/bootstrap3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/blog/css/index.css"/>
+    <script type="text/javascript" src="/static/public/jquery/jquery-3.4.0.js"></script>
+    <script type="text/javascript" src="/static/public/bootstrap3.3.7/js/bootstrap.js"></script>
+</head>
+<body>
+<div id="id_top_banner">
+    <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" id="id_navbar">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img src="/static/blog/img/index_dir/blog.png" alt="博客园"/>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active" id="id_active_li">
+                        <a href="#">首页</a>
+                    </li>
+                    <li>
+                        <a href="#">精华</a>
+                    </li>
+                    <li>
+                        <a href="#">候选</a>
+                    </li>
+
+
+                    <li>
+                        <a href="#">新闻</a>
+                    </li>
+                    <li>
+                        <a href="#">关注</a>
+                    </li>
+                    <li>
+                        <a href="#">我评</a>
+                    </li>
+                    <li>
+                        <a href="#">我赞</a>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            博客园
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" id="id_dropdown_menu">
+                            <li><a class="menu-item" href="#">园子</a></li>
+                            <li><a class="menu-item" href="#">新闻</a></li>
+                            <li><a class="menu-item" href="#">博问</a></li>
+                            <li><a class="menu-item" href="#">闪存</a></li>
+                            <li><a class="menu-item" href="#">小组</a></li>
+                            <li><a class="menu-item" href="#">收藏</a></li>
+                            <li><a class="menu-item" href="#">招聘</a></li>
+                            <li><a class="menu-item" href="#">班级</a></li>
+                            <li><a class="menu-item" href="#">找找看</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if request.user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                                <img id="id_login_user_avatar" src="/media/{{ request.user.avatar }}" alt="登录"/>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" id="id_login_dropdown_menu">
+                                <li><a href="/{{ request.user.username }}">我的博客</a></li>
+                                <li class="disabled"><a href="#">修改密码</a></li>
+                                <li><a href="/logout/">注销</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="class-login">
+                            <a href="/login/">
+                                <img src="/static/blog/img/index_dir/login.png" alt="登录"/>
+                            </a>
+                        </li>
+
+                        <li class="class-register">
+                            <a href="/register/">
+                                <img src="/static/blog/img/index_dir/register.png" alt="登录"/>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+
+{#    页头 #}
+<div class="container">
+    <div class="page-header text-center">
+        <h1 class="text-center">CNBLOGS</h1>
+        <p id="id_p_of_on">
+            <label id="id_label_of" class="of"></label>
+            <span>{{ "let's change the world!"|upper }}</span>
+            <label id="id_label_on" class="on"></label>
+        </p>
+    </div>
+</div>
+
+{# 轮播图 #}
+<div class="container-fluid" id="id_carousel">
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="/static/blog/img/index_dir/banner/home-banner4_1535545832.4715614.png" alt="..."/>
+                <div class="carousel-caption">
+                    ...
+                </div>
+            </div>
+            <div class="item">
+                <img src="/static/blog/img/index_dir/banner/pcbanner_1559620281.8534358.jpeg" alt="..."/>
+                <div class="carousel-caption">
+                    ...
+                </div>
+            </div>
+            <div class="item">
+                <img src="/static/blog/img/index_dir/banner/banner11_1538122470.2779157.png" alt="..."/>
+                <div class="carousel-caption">
+                    ...
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
+<div class="container-fluid" id="id_search_container_fluid">
+    <div class="row">
+        <div class="container">
+            <form>
+                <div class="form-group">
+                    <span class="glyphicon glyphicon-search"></span>
+                    <label for="exampleInputEmail1">Filter by</label>
+                    <div class="input-group">
+                        <input type="search" class="form-control" id="exampleInputSearch"
+                               placeholder="Keywords, Author, TechType"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type="button">
+                                Search!&nbsp;
+                                <span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">网站分类</div>
+
+                <!-- List group -->
+                <div class="list-group">
+                    <button class="list-group-item">
+                        <span class="badge">18</span>
+                        .NET技术
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">37</span>
+                        编程语言
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">6</span>
+                        软件设计
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">12</span>
+                        Web前端
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">1</span>
+                        企业信息化
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">3</span>
+                        手机开发
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">1</span>
+                        软件工程
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">5</span>
+                        数据库技术
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">5</span>
+                        操作系统
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">14</span>
+                        其他分类
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">2092</span>
+                        所有随笔
+                    </button>
+                    <button class="list-group-item">
+                        <span class="badge">295</span>
+                        所有评论
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7 class-article">
+            {% for each_article in article_ls %}
+                <div class="alert {% cycle 'alert-success' 'alert-info' 'alert-warning' 'alert-danger' %} alert-dismissible"
+                     role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="media">
+                        <div class="media-left media-top class-article-avatar">
+                            <a href="/{{ each_article.user.username }}">
+                                <img id="id_user_avatar" class="media-object"
+                                     src="/media/{{ each_article.user.avatar }}" alt="..."/>
+                            </a>
+                        </div>
+                        <div class="media-body class-article-body">
+                            <h4 class="media-heading class-article-heading">
+                                <a href="/{{ each_article.user.username }}/article/{{ each_article.pk }}"
+                                   class="alert-link">
+                                    {{ each_article.title }}
+                                </a>
+                            </h4>
+                            <p class="small class-article-desc">
+                                {{ each_article.desc }}
+                                <footer class="small class-article-footer">
+                                <span>
+                                    <a href="#" class="alert-link">
+                                        {{ each_article.user.username }}
+                                    </a>
+                                </span>
+                                    发布于
+                                    <span>
+                                    {{ each_article.create_time|date:"Y-m-d H:i:s" }}
+                                </span>
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                    <span>
+                                    评论({{ each_article.comment_count }})
+                                </span>
+                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                    <span>
+                                    点赞({{ each_article.up_count }})
+                                </span>
+                                </footer>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">[编辑推荐]</div>
+                <div class="panel-body">
+                    <a>领域驱动设计学习输出</a>
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">[最多推荐]</div>
+                <div class="panel-body">
+                    <a>使用 MiniProfiler 来分析 ASP.NET Core应用</a>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">[新闻头条]</div>
+                <div class="panel-body">
+                    <a>微软为 Java 开发者推出 VSCode 安装程序</a>
+                </div>
+            </div>
+            <div class="panel panel-warning">
+                <div class="panel-heading">[推荐新闻]</div>
+                <div class="panel-body">
+                    <a>图灵奖得主牵头推动芯片开源，清华伯克利成立RISC-V国际实验室</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/static/blog/js/index.js"></script>
+</body>
+</html>

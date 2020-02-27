@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>markdown-editor</title>
+    <link rel="stylesheet" type="text/css" href="/static/public/simplemde-markdown-editor-master/debug/simplemde.css" />
+    <link rel="stylesheet" type="text/css" href="/static/public/github-markdown-css-gh-pages/github-markdown.css" />
+    <link rel="stylesheet" type="text/css" href="/static/public/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <style type="text/css">
+        <!--
+
+            .CodeMirror, .CodeMirror-scroll {
+                min-height: 700px;
+            }
+
+        -->
+    </style>
+</head>
+<body>
+<button type="button" id="id_btn">输出</button>
+
+<label for="id_textarea">markdown</label>
+<textarea id="id_textarea" cols="30" rows="10"></textarea>
+
+<script type="text/javascript" src="/static/public/simplemde-markdown-editor-master/debug/simplemde.js"></script>
+<script type="text/javascript">
+
+    var simplemde = new SimpleMDE({
+        element: document.getElementById('id_textarea'),  //不指定也可以，默认找第一个textarea
+        autoDownloadFontAwesome: false,
+        status: false,  // status: 编辑器底部的状态栏，我不需要就设置为false了
+    });
+
+    let editorPreviewSide = document.getElementsByClassName('editor-preview-side')[0];
+    console.log(editorPreviewSide);
+    editorPreviewSide.classList.add('markdown-body');
+
+    // 获取内容以及提取HTML
+    // 获取内容使用simplemde.value()即可
+
+    let btn = document.getElementById('id_btn');
+    btn.onclick = function (event) {
+        console.log(simplemde.value());
+        // 转化为HTML
+        let html = simplemde.value();
+        console.log(simplemde.markdown(html));
+    };
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+
+
+
+<div class="calendar">
+    <img id="id_img_rounded" class="img-rounded" src="/static/blog/img/homesite_dir/calendar.png" alt="日历" />
+</div>
+
+<div class="tags">
+    <div class="panel panel-default">
+        <div class="panel-heading" id="id_tags_panel_heading">
+            <p>
+                <b>
+                    <span class="lead">我的标签</span>
+                </b>
+            </p>
+        </div>
+        <div class="list-group">
+            {% for each_tag in tag_ls %}
+                <a href="/{{ user.username }}/tag/{{ each_tag.title }}" class="list-group-item class-list-group-item">
+                    <span class="badge">{{ each_tag.c }}</span>
+                    {{ each_tag.title }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="categorys">
+    <div class="panel panel-default">
+        <div class="panel-heading" id="id_categorys_panel_heading">
+            <p>
+                <b>
+                    <span class="lead">随笔分类</span>
+                </b>
+            </p>
+        </div>
+        <div class="list-group">
+            {% for each_cate in cate_ls %}
+                <a href="/{{ user.username }}/category/{{ each_cate.title }}" class="list-group-item class-list-group-item">
+                    <span class="badge">{{ each_cate.c }}</span>
+                    {{ each_cate.title }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="archives">
+    <div class="panel panel-default">
+        <div class="panel-heading" id="id_archives_panel_heading">
+            <p>
+                <b>
+                    <span class="lead">随笔档案</span>
+                </b>
+            </p>
+        </div>
+        <div class="list-group">
+            {% for each_date in date_ls %}
+                <a href="/{{ user.username }}/archive/{{ each_date.month|date:'Y-m' }}" class="list-group-item class-list-group-item">
+                    <span class="badge">{{ each_date.c }}</span>
+                    {{ each_date.month|date:"Y年m日" }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,50 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    <title>{{ user.username }} - 博客园</title>
+{% endblock title%}
+
+{% block content %}
+    {% for each_article in article_ls %}
+        <div class="container">
+            <div class="alert {% cycle 'alert-success' 'alert-info' 'alert-warning' 'alert-danger' %} alert-dismissible"
+                 role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="media">
+
+                    <div class="media-body class-article-body">
+                        <h4 class="media-heading class-article-heading">
+                            <a href="/{{ user.username }}/article/{{ each_article.pk }}" class="alert-link">
+                                {{ each_article.title }}
+                            </a>
+                        </h4>
+                        <p class="small class-article-desc">
+                            {{ each_article.desc }}
+                            <footer class="small class-article-footer pull-right">
+                                    <span>
+                                        posted
+                                    </span>
+                                <span>
+                                        &nbsp;@&nbsp;
+                                    </span>
+                                <span>
+                                        {{ each_article.create_time|date:"Y-m-d H:i:s" }}
+                                    </span>
+                                <span class="glyphicon glyphicon-comment"></span>
+                                <span>
+                                        评论({{ each_article.comment_count }})
+                                    </span>
+                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                                <span>
+                                        点赞({{ each_article.up_count }})
+                                    </span>
+                            </footer>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

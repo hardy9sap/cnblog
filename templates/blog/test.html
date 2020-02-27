@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ request.user.blog.title }}
+{# 实验后的总结：#}
+{# 首先1. request在一个视图函数中，是全局对象，不用传，也可以使用 #}
+{# 2. auth.login()之后，request.user = user，这个user在所有的视图函数中都可以使用 #}
+{# 3. 而且无需使用request引导，可以单独使用#}
+</body>
+</html>
