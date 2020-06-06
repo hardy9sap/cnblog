@@ -3,7 +3,7 @@ bs4==0.0.1
 certifi==2019.3.9
 chardet==3.0.4
 defusedxml==0.6.0
-Django==2.2.1
+Django==2.2.13
 geetest==3.2.1
 idna==2.8
 oauthlib==3.0.1
